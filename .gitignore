@@ -1,0 +1,75 @@
+# ============================================================
+# Angular / Node.js
+# ============================================================
+
+# Installed npm packages
+Frontend/**/node_modules/
+
+# Angular build output
+Frontend/**/dist/
+
+# Angular CLI cache
+Frontend/**/.angular/
+
+# Angular test coverage
+Frontend/**/coverage/
+
+# General cache directories
+Frontend/**/.cache/
+
+
+# ============================================================
+# ASP.NET Core / .NET
+# ============================================================
+
+# Compiled output
+Backend/**/bin/
+Backend/**/obj/
+
+# Visual Studio temporary files
+Backend/**/.vs/
+
+# Visual Studio user-specific files
+Backend/**/*.user
+Backend/**/*.suo
+
+
+# ============================================================
+# Logs
+# ============================================================
+
+*.log
+
+
+# ============================================================
+# Database files
+# ============================================================
+
+# SQL Server database files
+*.mdf
+*.ndf
+*.ldf
+
+# SQL Server backup files
+*.bak
+
+
+# ============================================================
+# Environment / secrets
+# ============================================================
+
+# Environment variable files
+.env
+.env.*
+
+# Keep an example environment file if we create one
+!.env.example
+
+
+# ============================================================
+# Operating system files
+# ============================================================
+
+# Windows
+Thumbs.db
+Desktop.ini
