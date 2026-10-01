@@ -1,9 +1,19 @@
+using KdramasApp_BE.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+//get the connection info from KdramasDatabase conn string
+//from KdramasDbContext db context in appsettings.json
+//the context uses SQL Server
+builder.Services.AddDbContext<KdramasDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("KdramasDatabase")));
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
