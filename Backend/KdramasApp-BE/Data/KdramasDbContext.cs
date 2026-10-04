@@ -16,8 +16,8 @@ public class KdramasDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-
+        //searches all the implementations of IEntityTypeConfiguration<T>
+        //and applies them
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(KdramasDbContext).Assembly);
     }
