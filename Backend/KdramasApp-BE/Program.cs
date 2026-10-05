@@ -1,4 +1,6 @@
 using KdramasApp_BE.Data;
+using KdramasApp_BE.Services.Classes;
+using KdramasApp_BE.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,9 @@ builder.Services.AddDbContext<KdramasDbContext>(options =>
         builder.Configuration.GetConnectionString("KdramasDatabase")));
 
 builder.Services.AddOpenApi();
+
+//DI for services
+builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 
 var app = builder.Build();
 
