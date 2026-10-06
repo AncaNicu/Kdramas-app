@@ -1,12 +1,13 @@
 using KdramasApp_BE.Data;
 using KdramasApp_BE.Services.Classes;
 using KdramasApp_BE.Services.Interfaces;
+using KdramasApp_BE.Repositories.Classes;
+using KdramasApp_BE.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 //get the connection info from KdramasDatabase conn string
@@ -20,6 +21,10 @@ builder.Services.AddOpenApi();
 
 //DI for services
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+//DI for repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
