@@ -1,13 +1,12 @@
-﻿namespace KdramasApp_BE.DTOs;
+﻿using KdramasApp_BE.Enums;
+namespace KdramasApp_BE.DTOs;
 
 public class RegisterResult
 {
-    public bool Success { get; set; }
-    public string Status { get; set; } = "";
+    public RegisterStatus Status { get; set; }
 
-    public RegisterResult(bool succes, string status)
+    public RegisterResult(RegisterStatus status)
     {
-        this.Succes = succes;
         this.Status = status;
     }
 }
