@@ -1,1 +1,104 @@
-<p>register-component works!</p>
+<div class="register">
+
+    <h1 class="register__title">Register</h1>
+
+    <form [formGroup]="registerForm" 
+        class="register__form"
+        (ngSubmit)="register()">
+
+        <div class="register__field">
+
+            <label for="register-name" class="register__label">
+                Username
+            </label>
+
+            <input 
+                id="register-name"
+                type="text"
+                formControlName="name" 
+                class="register__input"
+                placeholder="Enter your username">
+
+            @if (getUsernameErrorMessage())
+            {
+                <p class="register__input-info">
+                    {{getUsernameErrorMessage()}}
+                </p>
+            }
+
+        </div>
+
+        <div class="register__field">
+
+            <label for="register-email" class="register__label">
+                Email
+            </label>
+
+            <input 
+                id="register-email"
+                type="email"
+                formControlName="email" 
+                class="register__input"
+                placeholder="Enter your email">
+
+            @if (getEmailErrorMessage())
+            {
+                <p class="register__input-info">
+                    {{getEmailErrorMessage()}}
+                </p>
+            }
+            
+        </div>
+
+        <div class="register__field">
+
+            <label for="register-password" class="register__label">
+                Password
+            </label>
+
+            <input 
+                id="register-password"
+                type="password"
+                formControlName="password" 
+                class="register__input"
+                placeholder="Enter your password">
+
+            @if (getPasswordErrorMessage())
+            {
+                <p class="register__input-info">
+                    {{getPasswordErrorMessage()}}
+                </p>
+            }
+            
+        </div>
+
+        <div class="register__field">
+
+            <label for="register-confirm-password" class="register__label">
+                Confirm password
+            </label>
+
+            <input 
+                id="register-confirm-password"
+                type="password"
+                formControlName="confirmPassword" 
+                class="register__input"
+                placeholder="Confirm your password">
+
+            @if (getConfirmPasswordErrorMessage())
+            {
+                <p class="register__input-info">
+                    {{getConfirmPasswordErrorMessage()}}
+                </p>
+            }
+            
+        </div>
+
+        <button
+            type="submit"
+            class="register__button">
+            Register
+        </button>
+
+    </form>
+</div>
