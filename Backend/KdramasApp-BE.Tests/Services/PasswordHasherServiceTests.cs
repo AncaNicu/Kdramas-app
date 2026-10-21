@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KdramasApp_BE.Tests.Services;
 
-public class PasswordHasherTests
+public class PasswordHasherServiceTests
 {
     [Fact]
     public void Hash_ShouldReturnDifferentValueFromOriginalPassword()
