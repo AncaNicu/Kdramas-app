@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -34,11 +35,13 @@ export class RegisterComponent
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
 
+    //pasword and confirm password match
     if (password === confirmPassword) 
     {
       return null;
     }
 
+    //at least one of them is empty
     if (!password || !confirmPassword) 
     {
       return null;
