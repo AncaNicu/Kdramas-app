@@ -11,7 +11,10 @@ import { RegisterRequest } from '../models/register-request';
 import { environment } from '../../environments/environment';
 import { APIResponse } from '../models/api-response';
 
-@Service()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class AuthService 
 {
     constructor(private http: HttpClient)

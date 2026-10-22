@@ -26,6 +26,24 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 //DI for repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// Get the allowed frontend origins from configuration.
+string[] allowedOrigins =
+    builder.Configuration
+        .GetSection("AllowedOrigins")
+        .Get<string[]>() ?? Array.Empty<string>();
+
+// Add the CORS policy for FE-BE communication.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev", policy =>
+    {
+        policy
+            .WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +58,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//add cors policy for FE-BE communication
+app.UseCors("AllowAngularDev");
 
 app.UseAuthorization();
 

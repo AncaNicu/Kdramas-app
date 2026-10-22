@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
+import { RegisterRequest } from '../../models/register-request';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -12,6 +14,10 @@ import { AuthService } from '../../services/auth-service';
 
 export class RegisterComponent 
 {
+  constructor(private authService: AuthService)
+  {
+
+  }
   registerForm = new FormGroup
   (
     {
@@ -29,6 +35,13 @@ export class RegisterComponent
       validators: this.passwordsMatch
     }
   );
+
+  //message to be displayed in case of a successful regitration
+  successMessage = '';
+  //message to be displayed in case of an unsuccessful regitration
+  errorMessage = '';
+  //shows if a request is in process
+  isSubmitting = false;
 
   passwordsMatch(control: AbstractControl) 
   {
@@ -152,12 +165,113 @@ export class RegisterComponent
     }
   }
 
+  //returns the error message to be displayed in the toast
+  private getRegistrationErrorMessage(error: HttpErrorResponse): string 
+  {
+    // No usable HTTP response was received.
+    if (error.status === 0) {
+      return 'Could not connect to the server. Please check your connection and try again.';
+    }
+
+    // The backend rejected the request because of invalid input.
+    if (error.status === 400) {
+      return this.getBackendErrorMessage(error)
+        ?? 'Please check your registration details.';
+    }
+
+    // The email already exists.
+    if (error.status === 409) {
+      return this.getBackendErrorMessage(error)
+        ?? 'There is already an account with the same email.';
+    }
+
+    // An unexpected server-side error occurred.
+    if (error.status >= 500) {
+      return this.getBackendErrorMessage(error)
+        ?? 'An unexpected server error occurred. Please try again later.';
+    }
+
+    // Handle other HTTP errors.
+    return this.getBackendErrorMessage(error)
+      ?? 'Registration failed. Please try again later.';
+  }
+
+  private getBackendErrorMessage(error: HttpErrorResponse): string | null 
+  {
+    const body: unknown = error.error;
+
+    if (typeof body === 'string' && body.trim().length > 0) 
+    {
+      return body;
+    }
+
+    if (typeof body !== 'object' || body === null) 
+    {
+      return null;
+    }
+
+    const response = body as 
+    {
+      message?: unknown;
+      title?: unknown;
+    };
+
+    if (
+      typeof response.message === 'string' &&
+      response.message.trim().length > 0
+    ) 
+    {
+      return response.message;
+    }
+
+    if (
+      typeof response.title === 'string' &&
+      response.title.trim().length > 0
+    ) 
+    {
+      return response.title;
+    }
+
+    return null;
+  }
+
+
   register(): void
   {
-    if(this.registerForm.invalid)
+    if(this.registerForm.invalid || this.isSubmitting)
     {
       this.registerForm.markAllAsTouched();
       return;
     }
+
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.isSubmitting = true;
+
+    const control = this.registerForm.controls;
+
+    const request: RegisterRequest = 
+    {
+      name: control.name.value ?? '',
+      email: control.email.value ?? '',
+      password: control.password.value ?? ''
+    };
+
+    this.authService.register(request).subscribe
+    ({
+        next: (response) =>
+        {
+          this.successMessage = response.message;
+          this.registerForm.reset();
+          this.isSubmitting = false;
+          alert(this.successMessage);
+        },
+        error: (error: HttpErrorResponse) => 
+        {
+          this.errorMessage = this.getRegistrationErrorMessage(error);
+          this.isSubmitting = false;
+          alert(this.errorMessage)
+        }
+    });
   }
 }
