@@ -17,10 +17,7 @@ import { APIResponse } from '../models/api-response';
 
 export class AuthService 
 {
-    constructor(private http: HttpClient)
-    {
-
-    }
+    constructor(private http: HttpClient){}
 
     register(request: RegisterRequest): Observable<APIResponse>
     {

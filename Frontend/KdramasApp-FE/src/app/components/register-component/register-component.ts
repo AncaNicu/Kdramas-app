@@ -14,10 +14,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export class RegisterComponent 
 {
-  constructor(private authService: AuthService)
-  {
-
-  }
+  constructor(private authService: AuthService){}
+  
   registerForm = new FormGroup
   (
     {
