@@ -1,11 +1,11 @@
-﻿using Azure.Core;
-using KdramasApp_BE.DTOs;
+﻿using KdramasApp_BE.DTOs;
 using KdramasApp_BE.Enums;
 using KdramasApp_BE.Models;
 using KdramasApp_BE.Services.Classes;
 using KdramasApp_BE.Services.Interfaces;
 using KdramasApp_BE.Repositories.Interfaces;
 using Moq;
+using Microsoft.Extensions.Configuration;
 
 
 namespace KdramasApp_BE.Tests.Services;
@@ -16,14 +16,17 @@ public class AuthServiceTests
 
     private readonly Mock<IPasswordHasher> hasherMock;
 
+    private readonly Mock<IConfiguration> configurationMock;
     private readonly IAuthService authService;
     public AuthServiceTests()
     {
         userRepositoryMock = new Mock<IUserRepository>();
         hasherMock = new Mock<IPasswordHasher>();
+        configurationMock = new Mock<IConfiguration>();
         authService = new AuthService(
             userRepositoryMock.Object,
-            hasherMock.Object);
+            hasherMock.Object,
+            configurationMock.Object);
     }
 
     //_____________________REGISTER TESTS
@@ -129,4 +132,6 @@ public class AuthServiceTests
         //check the result
         Assert.Equal(RegisterStatus.EmailAlreadyExists, result.Status);
     }
+
+    //_____________________LOGIN TESTS
 }

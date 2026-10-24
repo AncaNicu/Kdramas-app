@@ -124,4 +124,6 @@ public class AuthControllerTests
         //check the message of the response
         Assert.Equal("An unexpected error has occurred", apiResponse.Message);
     }
+
+    //_____________________LOGIN TESTS
 }

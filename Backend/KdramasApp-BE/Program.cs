@@ -5,7 +5,46 @@ using KdramasApp_BE.Repositories.Classes;
 using KdramasApp_BE.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
+//JWT authentication services
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//retrieve the signing key, issuer and audience from configuration
+string jwtKey = builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("JWT signing key is missing.");
+
+string jwtIssuer = builder.Configuration["Jwt:Issuer"]
+    ?? throw new InvalidOperationException("JWT issuer is missing.");
+
+string jwtAudience = builder.Configuration["Jwt:Audience"]
+    ?? throw new InvalidOperationException("JWT audience is missing.");
+
+builder.Services
+    //tells ASP.NET Core to use JWT bearer authentication as its
+    //default authentication scheme
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwtIssuer,
+
+            ValidateAudience = true,
+            ValidAudience = jwtAudience,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Convert.FromBase64String(jwtKey)),
+
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30)
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -62,6 +101,7 @@ app.UseHttpsRedirection();
 //add cors policy for FE-BE communication
 app.UseCors("AllowAngularDev");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

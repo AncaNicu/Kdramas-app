@@ -36,4 +36,30 @@ public class AuthController : ControllerBase
                     new APIResponse("An unexpected error has occurred"));
         }
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginRequest request)
+    {
+        //call the service
+        LoginResult result = await _authService.LoginAsync(request);
+
+        //interpret the result and return the status code accordingly
+        switch(result.Status)
+        {
+            case LoginStatus.InvalidEmailOrPassword:
+                //return StatusCode(StatusCodes.Status401Unauthorized,
+                //    new APIResponse("Invalid email or password"));
+                return Unauthorized(new LoginResponse("Invalid email or password"));
+            case LoginStatus.LoginSuccessful:
+                if(string.IsNullOrWhiteSpace(result.Token))
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                        new LoginResponse("An unexpected error has occurred"));
+                }
+                return Ok(new LoginResponse("Login successful", result.Token));
+            default:
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new LoginResponse("An unexpected error has occurred"));
+        }
+    }
 }

@@ -3,7 +3,7 @@ namespace KdramasApp_BE.DTOs;
 
 public class RegisterResult
 {
-    public RegisterStatus Status { get; set; }
+    public RegisterStatus Status { get; }
 
     public RegisterResult(RegisterStatus status)
     {
