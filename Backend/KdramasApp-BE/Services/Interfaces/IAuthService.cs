@@ -1,4 +1,5 @@
 ﻿using KdramasApp_BE.DTOs;
+using KdramasApp_BE.Models;
 namespace KdramasApp_BE.Services.Interfaces;
 
 public interface IAuthService
