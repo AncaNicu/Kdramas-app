@@ -1,0 +1,55 @@
+<div class="login">
+
+    <h1 class="login__title">Login</h1>
+
+    <form [formGroup]="loginForm"
+    class="login__form"
+    (ngSubmit)="login()">
+        <div class="login__field">
+            <label for="login-email" class="login__label">
+                Email
+            </label>
+
+            <input 
+                id="login-email"
+                type="email"
+                formControlName="email"
+                class="login__input"
+                placeholder="Enter your email">
+            
+            @if (getEmailErrorMessage())
+            {
+                <p class="login__input-info">
+                    {{getEmailErrorMessage()}}
+                </p>
+            }    
+        </div>
+
+        <div class="login__field">
+            <label for="login-password" class="login__label">
+                Password
+            </label>
+
+            <input 
+                id="login-password"
+                type="password"
+                formControlName="password"
+                class="login__input"
+                placeholder="Enter your password">
+            
+            @if (getPasswordErrorMessage())
+            {
+                <p class="login__input-info">
+                    {{getPasswordErrorMessage()}}
+                </p>
+            }    
+        </div>
+
+        <button
+            type="submit"
+            class="login__button"
+            [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Logging in...' : 'Login' }}
+        </button>
+    </form>
+</div>  
