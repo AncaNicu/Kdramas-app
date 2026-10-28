@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterComponent } from './register-component';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { AuthService } from '../../services/auth-service';
 import { RegisterRequest } from '../../models/register-request';
-import { APIResponse } from '../../models/api-response';
 
-describe('RegisterComponent', () => {
+describe('RegisterComponent', () => 
+{
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
@@ -19,11 +19,11 @@ describe('RegisterComponent', () => {
   {
     authServiceMock =
     {
-      register: vi.fn().mockReturnValue(
+      register: vi.fn().mockReturnValue
+      (
         of({ message: 'Registration successful' })
       )   
     };
-
 
     await TestBed.configureTestingModule
     ({
@@ -167,15 +167,9 @@ describe('RegisterComponent', () => {
     expect(component.registerForm.valid).toBe(false);
   });
 
-  //================TEST FOR CALLING THE SERVICE
-  it('should call the service to register', () => 
-  {
-
-  });
-
   //================TEST FOR register()
   it('should mark all controls as touched and not submit an invalid form', () =>
-  {
+  { 
     //ACT
     component.register();
 
