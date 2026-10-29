@@ -1,4 +1,5 @@
 using KdramasApp_BE.Data;
+using KdramasApp_BE.Data.Seeding;
 using KdramasApp_BE.Services.Classes;
 using KdramasApp_BE.Services.Interfaces;
 using KdramasApp_BE.Repositories.Classes;
@@ -65,6 +66,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 //DI for repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+//DI for seeders
+builder.Services.AddScoped<AdminSeeder>();
+
 // Get the allowed frontend origins from configuration.
 string[] allowedOrigins =
     builder.Configuration
@@ -88,6 +92,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    //seed the data
+    using var scope = app.Services.CreateScope();
+
+    var seeder = scope.ServiceProvider
+        .GetRequiredService<AdminSeeder>();
+
+    await seeder.SeedAsync();
+    //end seed
+
     app.MapOpenApi();
 
     app.UseSwaggerUI(options =>
