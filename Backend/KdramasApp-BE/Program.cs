@@ -62,9 +62,11 @@ builder.Services.AddOpenApi();
 //DI for services
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IActorService, ActorService>();
 
 //DI for repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IActorRepository, ActorRepository>();
 
 //DI for seeders
 builder.Services.AddScoped<AdminSeeder>();
