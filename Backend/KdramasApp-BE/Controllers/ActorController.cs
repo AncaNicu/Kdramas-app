@@ -1,5 +1,4 @@
 ﻿using KdramasApp_BE.DTOs;
-using KdramasApp_BE.Models;
 using KdramasApp_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

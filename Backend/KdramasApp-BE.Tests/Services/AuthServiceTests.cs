@@ -14,14 +14,14 @@ namespace KdramasApp_BE.Tests.Services;
 
 public class AuthServiceTests
 {
-    private readonly Mock<IUserRepository> userRepositoryMock;
+    private readonly Mock<IUserRepository> _userRepositoryMock;
 
-    private readonly Mock<IPasswordHasher> hasherMock;
-    private readonly IAuthService authService;
+    private readonly Mock<IPasswordHasher> _hasherMock;
+    private readonly IAuthService _authService;
     public AuthServiceTests()
     {
-        userRepositoryMock = new Mock<IUserRepository>();
-        hasherMock = new Mock<IPasswordHasher>();
+        _userRepositoryMock = new Mock<IUserRepository>();
+        _hasherMock = new Mock<IPasswordHasher>();
 
         //JWT settings used only by tests
         var settings = new Dictionary<string, string?>
@@ -38,9 +38,9 @@ public class AuthServiceTests
             .AddInMemoryCollection(settings)
             .Build();
 
-        authService = new AuthService(
-            userRepositoryMock.Object,
-            hasherMock.Object,
+        _authService = new AuthService(
+            _userRepositoryMock.Object,
+            _hasherMock.Object,
             configuration);
     }
 
@@ -59,32 +59,32 @@ public class AuthServiceTests
         string hasshedPassword = "passwordHash";
 
         //-> suppose email doesn't already exist
-        userRepositoryMock
+        _userRepositoryMock
             .Setup(x => x.EmailExistsAsync(request.Email))
             .ReturnsAsync(false);
 
         //build the hasshed pass
-        hasherMock
+        _hasherMock
             .Setup(x => x.Hash(request.Password))
             .Returns(hasshedPassword);
 
         //Act
-        var result = await authService.RegisterAsync(request);
+        var result = await _authService.RegisterAsync(request);
 
         //Assert
 
         //check if it verified the email
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.EmailExistsAsync(request.Email), 
             Times.Once);
 
         //check if it hasshed the pass
-        hasherMock.Verify(
+        _hasherMock.Verify(
             x => x.Hash(request.Password),
             Times.Once);
 
         //check if it added the new user
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.AddUserAsync(
                 It.Is<User>(user =>
                     user.Name == request.Name &&
@@ -94,7 +94,7 @@ public class AuthServiceTests
             Times.Once);
 
         //check if it saved the changes
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.SaveChangesAsync(),
             Times.Once);
 
@@ -114,33 +114,33 @@ public class AuthServiceTests
         };
 
         //-> suppose email already exists
-        userRepositoryMock
+        _userRepositoryMock
             .Setup(x => x.EmailExistsAsync(request.Email))
             .ReturnsAsync(true);
 
         //Act
-        var result = await authService.RegisterAsync(request);
+        var result = await _authService.RegisterAsync(request);
 
         //Assert
 
         //check if it verified the email
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.EmailExistsAsync(request.Email),
             Times.Once);
 
         //check if it hasshed the pass -> never
-        hasherMock.Verify(
+        _hasherMock.Verify(
             x => x.Hash(request.Password),
             Times.Never);
 
         //check if it added the new user -> never
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.AddUserAsync(
                 It.IsAny<User>()),
             Times.Never);
 
         //check if it saved the changes -> never
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.SaveChangesAsync(),
             Times.Never);
 
@@ -170,26 +170,26 @@ public class AuthServiceTests
 
         //suppose there is a user with the same email
         //and that user is user
-        userRepositoryMock
+        _userRepositoryMock
             .Setup(x => x.GetUserByEmailAsync(request.Email))
             .ReturnsAsync(user);
 
         //suppose the password is correct
-        hasherMock
+        _hasherMock
             .Setup(x => x.Verify(request.Password, user.HashedPassword))
             .Returns(true);
 
         //Act
-        var result = await authService.LoginAsync(request);
+        var result = await _authService.LoginAsync(request);
 
         //Assert
         //check if it called GetUserByEmailAsync
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.GetUserByEmailAsync(request.Email),
             Times.Once);
 
         //check if it verified the password
-        hasherMock.Verify(
+        _hasherMock.Verify(
             x => x.Verify(request.Password, user.HashedPassword),
             Times.Once);
 
@@ -238,21 +238,21 @@ public class AuthServiceTests
         User? user = null;
 
         //suppose there is no user with the email
-        userRepositoryMock
+        _userRepositoryMock
             .Setup(x => x.GetUserByEmailAsync(request.Email))
             .ReturnsAsync(user);
 
         //Act
-        var result = await authService.LoginAsync(request);
+        var result = await _authService.LoginAsync(request);
 
         //Assert
         //check if the GetUserByEmailAsync was called once
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.GetUserByEmailAsync(request.Email),
             Times.Once);
 
         //check if the password was verified -> never
-        hasherMock.Verify(
+        _hasherMock.Verify(
             x => x.Verify(
                 It.IsAny<string>(),
                 It.IsAny<string>()),
@@ -280,26 +280,26 @@ public class AuthServiceTests
         };
 
         //suppose the returned user is user
-        userRepositoryMock
+        _userRepositoryMock
             .Setup(x => x.GetUserByEmailAsync(request.Email))
             .ReturnsAsync(user);
 
         //suppose the paswords don't match
-        hasherMock
+        _hasherMock
             .Setup(x => x.Verify(request.Password, user.HashedPassword))
             .Returns(false);
 
         //Act
-        var result = await authService.LoginAsync(request);
+        var result = await _authService.LoginAsync(request);
 
         //Assert
         //check if GetUserByEmailAsync was called once
-        userRepositoryMock.Verify(
+        _userRepositoryMock.Verify(
             x => x.GetUserByEmailAsync(request.Email),
             Times.Once);
 
         //check if it checked the password
-        hasherMock.Verify(
+        _hasherMock.Verify(
             x => x.Verify(request.Password, user.HashedPassword),
             Times.Once);
 

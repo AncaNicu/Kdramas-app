@@ -1,7 +1,7 @@
-﻿using KdramasApp_BE.Repositories.Interfaces;
-using KdramasApp_BE.Services.Interfaces;
-using KdramasApp_BE.DTOs;
+﻿using KdramasApp_BE.DTOs;
 using KdramasApp_BE.Models;
+using KdramasApp_BE.Repositories.Interfaces;
+using KdramasApp_BE.Services.Interfaces;
 
 namespace KdramasApp_BE.Services.Classes;
 
@@ -14,7 +14,7 @@ public class ActorService: IActorService
         this._repository = repository;
     }
 
-    private ActorResponse MapToActorResponse(Actor actor)
+    public ActorResponse MapToActorResponse(Actor actor)
     {
         ActorResponse response = new ActorResponse
         {
