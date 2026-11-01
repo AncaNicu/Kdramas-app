@@ -6,11 +6,11 @@ import { HttpClient } from '@angular/common/http';
 //Represents the asynchronous result of the HTTP request.
 import { Observable } from 'rxjs';
 
-import { RegisterRequest } from '../models/register-request';
-import { environment } from '../../environments/environment';
-import { APIResponse } from '../models/api-response';
-import { LoginRequest } from '../models/login-request';
-import { LoginResponse } from '../models/login-response';
+import { RegisterRequest } from '../../models/register-request';
+import { environment } from '../../../environments/environment';
+import { APIResponse } from '../../models/api-response';
+import { LoginRequest } from '../../models/login-request';
+import { LoginResponse } from '../../models/login-response';
 
 @Injectable({
   providedIn: 'root'

@@ -4,11 +4,11 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { AuthService } from './auth-service';
-import { RegisterRequest } from '../models/register-request';
-import { APIResponse } from '../models/api-response';
-import { environment } from '../../environments/environment';
-import { LoginRequest } from '../models/login-request';
-import { LoginResponse } from '../models/login-response';
+import { RegisterRequest } from '../../models/register-request';
+import { APIResponse } from '../../models/api-response';
+import { environment } from '../../../environments/environment';
+import { LoginRequest } from '../../models/login-request';
+import { LoginResponse } from '../../models/login-response';
 import { errorContext } from 'rxjs/internal/util/errorContext';
 
 describe('AuthService', () => {

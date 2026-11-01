@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth-service';
-import { ErrorHandlerService } from '../../services/error-handler-service';
+import { AuthService } from '../../services/auth-service/auth-service';
+import { ErrorHandlerService } from '../../services/error-handler-service/error-handler-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoginRequest } from '../../models/login-request';
-import { ToastService } from '../../services/toast-service';
+import { ToastService } from '../../services/toast-service/toast-service';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -144,7 +144,7 @@ export class LoginComponent
         this.isSubmitting = false;
         this.toastService.showErrorToast(this.getLoginErrorMessage(error));
 
-        this.loginForm.reset();
+        //this.loginForm.reset();
       }
     });
   }

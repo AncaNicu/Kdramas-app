@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ToastService } from '../../services/toast-service';
+import { ToastService } from '../../services/toast-service/toast-service';
 
 @Component({
   imports: [],

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth-service';
+import { AuthService } from '../../services/auth-service/auth-service';
 import { RegisterRequest } from '../../models/register-request';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandlerService } from '../../services/error-handler-service';
-import { ToastService } from '../../services/toast-service';
+import { ErrorHandlerService } from '../../services/error-handler-service/error-handler-service';
+import { ToastService } from '../../services/toast-service/toast-service';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -18,7 +19,8 @@ export class RegisterComponent
   constructor(
     private authService: AuthService,
     private errorHandlerService: ErrorHandlerService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private router: Router
   ){}
   
   registerForm = new FormGroup
@@ -209,12 +211,15 @@ export class RegisterComponent
           this.isSubmitting = false;
           this.toastService.showSuccessToast(response.message);
           this.registerForm.reset();
+
+          //redirect to login for a successful registration
+          this.router.navigate(['/login'])
         },
         error: (error: HttpErrorResponse) => 
         {
           this.isSubmitting = false;
           this.toastService.showErrorToast(this.getRegistrationErrorMessage(error));
-          this.registerForm.reset();
+          //this.registerForm.reset();
         }
     });
   }
