@@ -213,7 +213,7 @@ export class RegisterComponent
           this.registerForm.reset();
 
           //redirect to login for a successful registration
-          this.router.navigate(['/login'])
+          this.router.navigate(['/login']);
         },
         error: (error: HttpErrorResponse) => 
         {

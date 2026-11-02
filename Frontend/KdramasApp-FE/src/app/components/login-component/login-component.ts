@@ -5,6 +5,7 @@ import { ErrorHandlerService } from '../../services/error-handler-service/error-
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoginRequest } from '../../models/login-request';
 import { ToastService } from '../../services/toast-service/toast-service';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -17,7 +18,8 @@ export class LoginComponent
   constructor(
     private authService: AuthService,
     private errorHandlerService: ErrorHandlerService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private router: Router
   ) {}
 
   loginForm = new FormGroup
@@ -138,6 +140,7 @@ export class LoginComponent
         this.toastService.showSuccessToast(response.message);
 
         this.loginForm.reset();
+        this.router.navigate(['/actors']);
       },
       error: (error: HttpErrorResponse) =>
       {

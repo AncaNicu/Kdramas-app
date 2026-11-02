@@ -1,1 +1,58 @@
-<p>actor-list-component works!</p>
+<div class="actors">
+    <h1 class ="actors__title">Actors</h1>
+    @if (loadError)
+    {
+        <div class="actors__error-state">
+            {{ loadError }}
+        </div>
+    }
+    @else if (actors$ | async; as actors)
+    {
+        @if (isAdmin)
+        {
+            <button class="actors__add-button">
+                Add Actor
+            </button>
+        }
+        @if (actors.length ===  0)
+        {
+            <div class="actors__empty-state">
+                No actors available.
+            </div>
+        }
+        @else
+        {
+            @for (actor of actors; track actor.actorId)
+            {
+                <div class="actors__card">
+                    <div class="actors__image">
+                        @if (actor.imageUrl)
+                        {
+                            <img [src]="actor.imageUrl" [alt]="actor.name">
+                        }
+                        @else
+                        {
+                            <div class="actors__image-placeholder">
+                                No image available
+                            </div>
+                        }
+                    </div>
+
+                    <div class="actors__body">
+                        <p class="actors__name"> {{ actor.name }} </p>
+                        <p class="actors__birthdate"> {{ actor.birthDate }} </p>
+                    </div>
+
+                    <div class="actors__buttons">
+                        @if (isAdmin)
+                        {
+                            <button class="actors__edit-button">Edit</button>
+                            <button class="actors__delete-button">Edit</button>
+                        }
+                        <button class="actors__details-button">View details</button>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>

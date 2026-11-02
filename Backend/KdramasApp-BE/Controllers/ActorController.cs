@@ -1,11 +1,13 @@
 ﻿using KdramasApp_BE.DTOs;
 using KdramasApp_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KdramasApp_BE.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ActorController : ControllerBase
 {
     private readonly IActorService _actorService;
@@ -16,6 +18,7 @@ public class ActorController : ControllerBase
     }
 
     [HttpPost("add")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddActor(ActorRequest actorRequest)
     {
         //call the service
@@ -26,6 +29,7 @@ public class ActorController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous] //-> all users can access it (even the unauthenticated ones)
     public async Task<IActionResult> GetAllActors()
     {
         //call the service
@@ -35,6 +39,7 @@ public class ActorController : ControllerBase
     }
 
     [HttpGet("get/{id:int}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetActorById([FromRoute] int id)
     {
         // Call the service
@@ -49,6 +54,7 @@ public class ActorController : ControllerBase
     }
 
     [HttpDelete("delete/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteActor([FromRoute] int id)
     {
         //call the service
@@ -65,6 +71,7 @@ public class ActorController : ControllerBase
     }
 
     [HttpPut("update/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateActor([FromRoute] int id, ActorRequest request)
     {
         //call the service

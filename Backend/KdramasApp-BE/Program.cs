@@ -1,14 +1,14 @@
 using KdramasApp_BE.Data;
 using KdramasApp_BE.Data.Seeding;
-using KdramasApp_BE.Services.Classes;
-using KdramasApp_BE.Services.Interfaces;
 using KdramasApp_BE.Repositories.Classes;
 using KdramasApp_BE.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
+using KdramasApp_BE.Services.Classes;
+using KdramasApp_BE.Services.Interfaces;
 //JWT authentication services
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +41,9 @@ builder.Services
                 Convert.FromBase64String(jwtKey)),
 
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.FromSeconds(30)
+            ClockSkew = TimeSpan.FromSeconds(30),
+
+            RoleClaimType = ClaimTypes.Role
         };
     });
 
