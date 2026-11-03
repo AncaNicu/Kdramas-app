@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { APIResponse } from "../../models/api-response";
 import { environment } from '../../../environments/environment';
 import { Actor } from "../../models/actor";
+import { ActorDetails } from "../../models/actor-details";
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,9 @@ export class ActorService
             (`${environment.apiUrl}/api/actor/update/${id}`, request);
     }
 
-    getActorById(id: number): Observable<Actor>
+    getActorById(id: number): Observable<ActorDetails>
     {
-        return this.http.get<Actor>
+        return this.http.get<ActorDetails>
             (`${environment.apiUrl}/api/actor/get/${id}`);
     }
 

@@ -1,9 +1,9 @@
 <div class="actors">
     <h1 class ="actors__title">Actors</h1>
-    @if (loadError)
+    @if (loadError())
     {
         <div class="actors__error-state">
-            {{ loadError }}
+            {{ loadError() }}
         </div>
     }
     @else if (actors$ | async; as actors)
@@ -47,9 +47,13 @@
                         @if (isAdmin)
                         {
                             <button class="actors__edit-button">Edit</button>
-                            <button class="actors__delete-button">Edit</button>
+                            <button class="actors__delete-button">Delete</button>
                         }
-                        <button class="actors__details-button">View details</button>
+                        <button 
+                            class="actors__details-button"
+                            (click)="viewActorDetails(actor.actorId)">
+                            View details
+                        </button>
                     </div>
                 </div>
             }

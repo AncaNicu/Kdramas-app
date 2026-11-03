@@ -8,5 +8,6 @@ public interface IActorRepository
     Task<bool> DeleteActorAsync(int actorId);
     Task<bool> UpdateActorAsync(int actorId, Actor newActor);
     Task<Actor?> GetActorAsync(int actorId);
+    Task<Actor?> GetActorWithKdramasAsync(int actorId);
     Task SaveChangesAsync();
 }

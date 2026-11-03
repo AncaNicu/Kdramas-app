@@ -9,6 +9,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
     { path: 'actors/:id', component: ActorDetailsComponent },
+    
     { path: 'actors', component: ActorListComponent },
     { path: '**', redirectTo: 'login' }
 ];

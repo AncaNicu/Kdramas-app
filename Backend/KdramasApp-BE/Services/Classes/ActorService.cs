@@ -45,16 +45,34 @@ public class ActorService: IActorService
         return this.MapToActorResponse(newActor);
     }
 
-    public async Task<ActorResponse?> GetActorByIdAsync(int actorId)
+    public async Task<ActorDetailsResponse?> GetActorByIdAsync(int actorId)
     {
-        Actor? actor = await _repository.GetActorAsync(actorId);
+        Actor? actor = await _repository.GetActorWithKdramasAsync(actorId);
         
         if(actor == null)
         {
             return null;
         }
 
-        ActorResponse response = this.MapToActorResponse(actor);
+        ActorDetailsResponse response = new ActorDetailsResponse
+        {
+            ActorId = actor.ActorId,
+            Name = actor.Name,
+            BirthDate = actor.BirthDate,
+            ImageUrl = actor.ImageUrl,
+
+            Kdramas = actor!.KdramaActors
+                //turn each join entity into a KdramaSummaryResponse
+                .Select(kdramaActor => new KdramaSummaryResponse
+                {
+                    KdramaId = kdramaActor.ActorId,
+                    Title = kdramaActor.Kdrama.Title,
+                    ReleaseYear = kdramaActor.Kdrama.ReleaseYear,
+                    PosterUrl = kdramaActor.Kdrama.PosterUrl
+                })
+                .OrderByDescending(kdrama => kdrama.ReleaseYear)
+                .ToList()
+        };
 
         return response;
     }

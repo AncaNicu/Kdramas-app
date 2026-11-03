@@ -56,4 +56,12 @@ public class ActorRepository : IActorRepository
         }
         return false;
     }
+    public async Task<Actor?> GetActorWithKdramasAsync(int actorId)
+    {
+        return await _context.Actors
+            .AsNoTracking()//tells that we only read the data (we don't modify it)
+            .Include(actor => actor.KdramaActors)
+            .ThenInclude(kdramaActor => kdramaActor.Kdrama)
+            .FirstOrDefaultAsync(actor => actor.ActorId == actorId);
+    }
 }

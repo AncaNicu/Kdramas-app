@@ -1,1 +1,72 @@
-<p>actor-details-component works!</p>
+<div class="actor-details">
+    <h1 class="actor-details__title">Actor Details</h1>
+    @if (loadError())
+    {
+        <div class="actor-details__error-state">
+            {{ loadError() }}
+        </div>
+    }
+    @else if (actorDetails$ | async; as actorDetails)
+    {
+        <div class="actor-details__data">
+            <div class="actor-details__image">
+                @if (actorDetails.imageUrl)
+                {
+                    <img [src]="actorDetails.imageUrl" [alt]="actorDetails.name">
+                }
+                @else
+                {
+                    <div class="actor-details__image-placeholder">
+                        No image available
+                    </div>
+                }
+            </div>
+            <div class="actor-details__info">
+                <p class="actor-details__name"> {{ actorDetails.name }} </p>
+                <p class="actor-details__birthdate"> {{ actorDetails.birthDate }} </p>
+            </div>
+        </div>
+        
+        <div class="actor-details__kdramas">
+            @if (actorDetails.kdramas.length === 0)
+            {
+                <div class="actor-details__kdramas__error-state">
+                    No kdramas available for this actor.
+                </div>
+            }
+            @else
+            {
+                @for (kdrama of actorDetails.kdramas; track kdrama.kdramaId)
+                {
+                    <div class="actor-details__kdrama-card">
+                        <div class="actor-details__kdrama__image">
+                            @if (kdrama.posterUrl)
+                            {
+                                <img [src]="kdrama.posterUrl" [alt]="kdrama.title">
+                            }
+                            @else
+                            {
+                                <div class="actor-details__image-placeholder">
+                                    No poster image available
+                                </div>
+                            }
+                        </div>
+                        <div class="actor-details__kdrama-info">
+                            <p class="actor-details__kdrama-title">{{ kdrama.title }}</p>
+                            <p class="actor-details__kdrama-release-year">{{ kdrama.releaseYear }}</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        @if (isAdmin)
+        {
+            <div class="actor-details__buttons">
+                <button class="actor-details__edit-button">Edit</button>
+                <button class="actor-details__delete-button">Delete</button>
+            </div>
+        }
+    }
+
+</div>

@@ -43,7 +43,7 @@ public class ActorController : ControllerBase
     public async Task<IActionResult> GetActorById([FromRoute] int id)
     {
         // Call the service
-        ActorResponse? response = await _actorService.GetActorByIdAsync(id);
+        ActorDetailsResponse? response = await _actorService.GetActorByIdAsync(id);
 
         if (response == null)
         {
