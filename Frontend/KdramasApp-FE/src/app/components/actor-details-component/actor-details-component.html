@@ -64,8 +64,20 @@
         {
             <div class="actor-details__buttons">
                 <button class="actor-details__edit-button">Edit</button>
-                <button class="actor-details__delete-button">Delete</button>
+                <button 
+                    class="actor-details__delete-button"
+                    (click)="openDeleteConfirmationDialog(actorDetails.actorId)">
+                    Delete
+                </button>
             </div>
+        }
+        @if (showDeleteConfirmation())
+        {
+            <app-confirmation-dialog
+                [message] = "'Are you sure you want to delete this actor?'"
+                (confirmed) = "confirmDelete()"
+                (cancelled) = "cancelDelete()">
+            </app-confirmation-dialog>
         }
     }
 

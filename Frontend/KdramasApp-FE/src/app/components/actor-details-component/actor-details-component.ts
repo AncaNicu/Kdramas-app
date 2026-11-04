@@ -4,11 +4,13 @@ import { ActorService } from '../../services/actor-service/actor-service';
 import { AuthService } from '../../services/auth-service/auth-service';
 import { Observable, catchError, EMPTY } from 'rxjs';
 import { ActorDetails } from '../../models/actor-details';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from '../../services/toast-service/toast-service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog-component/confirmation-dialog-component';
 
 @Component({
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, ConfirmationDialogComponent],
   selector: 'app-actor-details-component',
   styleUrl: './actor-details-component.css',
   templateUrl: './actor-details-component.html',
@@ -18,8 +20,10 @@ export class ActorDetailsComponent  implements OnInit
   constructor(
     private actorService: ActorService,
     private authService: AuthService,
+    private toast: ToastService,
     //to be able to retrieve the actor's id
-    private route: ActivatedRoute
+    private route: ActivatedRoute, 
+    private router: Router
   ){}
 
   actorDetails$!: Observable<ActorDetails>;
@@ -27,6 +31,12 @@ export class ActorDetailsComponent  implements OnInit
   loadError = signal<string | null>(null);
   //check if the user is an admin
   isAdmin: boolean = false;
+
+  //confirmation dialog related stuff --> DELETE
+  //controls the visisbility of the dialog
+  showDeleteConfirmation = signal(false);
+  //stores the id of the actor that has to be deleted
+  selectedActorId = signal<number| null>(null);
 
   ngOnInit(): void
   {
@@ -70,5 +80,51 @@ export class ActorDetailsComponent  implements OnInit
         return EMPTY;
       })
     );
+  }
+
+  //open the confirmation dialog
+  openDeleteConfirmationDialog(actorId: number): void
+  {
+    this.selectedActorId.set(actorId);
+    this.showDeleteConfirmation.set(true);
+  }
+
+  //used when the user clicks on Cancel
+  cancelDelete(): void
+  {
+    this.selectedActorId.set(null);
+    this.showDeleteConfirmation.set(false);
+  }
+
+  //used when the user confirms the deletion
+  confirmDelete(): void
+  {
+    const actorId = this.selectedActorId();
+
+    if(actorId === null)
+    {
+      return;
+    }
+
+    this.actorService.deleteActor(actorId).subscribe
+    ({
+      next: (response) =>
+      {
+        this.toast.showSuccessToast(response.message);
+        this.router.navigate(['/actors']);
+
+        //closes the dialog
+        this.cancelDelete();
+      },
+      error: (error: HttpErrorResponse) =>
+      {
+        this.toast.showErrorToast(
+          error.error?.message ?? "Unable to delete actor. Please try again later."
+        );
+
+        //closes the dialog
+        this.cancelDelete();
+      }
+    });
   }
 }

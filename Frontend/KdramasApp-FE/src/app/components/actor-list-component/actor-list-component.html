@@ -6,7 +6,7 @@
             {{ loadError() }}
         </div>
     }
-    @else if (actors$ | async; as actors)
+    @else
     {
         @if (isAdmin)
         {
@@ -14,7 +14,7 @@
                 Add Actor
             </button>
         }
-        @if (actors.length ===  0)
+        @if (actors().length ===  0)
         {
             <div class="actors__empty-state">
                 No actors available.
@@ -22,7 +22,7 @@
         }
         @else
         {
-            @for (actor of actors; track actor.actorId)
+            @for (actor of actors(); track actor.actorId)
             {
                 <div class="actors__card">
                     <div class="actors__image">
@@ -47,7 +47,11 @@
                         @if (isAdmin)
                         {
                             <button class="actors__edit-button">Edit</button>
-                            <button class="actors__delete-button">Delete</button>
+                            <button 
+                                class="actors__delete-button"
+                                (click)="openDeleteConfirmationDialog(actor.actorId)">
+                                Delete
+                            </button>
                         }
                         <button 
                             class="actors__details-button"
@@ -56,6 +60,15 @@
                         </button>
                     </div>
                 </div>
+            }
+
+            @if (showDeleteConfirmation())
+            {
+                <app-confirmation-dialog
+                    [message] = "'Are you sure you want to delete this actor?'"
+                    (confirmed) = "confirmDelete()"
+                    (cancelled) = "cancelDelete()">
+                </app-confirmation-dialog>
             }
         }
     }

@@ -1,0 +1,38 @@
+
+<div class="confirmation-dialog__backdrop">
+    <div
+        class="confirmation-dialog"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="confirmation-dialog-title"
+        aria-describedby="confirmation-dialog-message">
+
+        <h2
+            id="confirmation-dialog-title"
+            class="confirmation-dialog__title">
+            Confirm deletion
+        </h2>
+
+        <p
+            id="confirmation-dialog-message"
+            class="confirmation-dialog__message">
+            {{ message() }}
+        </p>
+
+        <div class="confirmation-dialog__buttons">
+            <button
+                type="button"
+                class="confirmation-dialog__cancel-button"
+                (click)="cancel()">
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="confirmation-dialog__confirm-button"
+                (click)="confirm()">
+                Yes
+            </button>
+        </div>
+    </div>
+</div>
